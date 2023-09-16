@@ -14,28 +14,27 @@ set cindent
 set autoindent
 " 允许折叠
 set foldenable
+" set foldmethod = manual
 noremap  <expr>0     col('.') == 1 ? '^': '0'
 
 let mapleader=" "
-nnoremap <leader>l L
-nnoremap <leader>h H
+" 退出
 nnoremap <leader>wq :wq<CR>
 nnoremap <leader>q :q!<CR>
-inoremap kk <ESC>
+nnoremap <leader>s :split
+nnoremap <leader>sv :vsplit
+"inoremap kk <ESC>
 
-nnoremap H ^
-nnoremap L $
 nnoremap <C-a> ^
 nnoremap <C-e> $
 nnoremap 00 ^
 
+"insert mode
 inoremap <C-a> <ESC>I
 inoremap <C-e> <ESC>A
 
+" visual mode 
 vnoremap j gj
 vnoremap k gk
 vnoremap <C-a> ^
 vnoremap <C-e> $
-nnoremap L ^
-nnoremap H $
-
