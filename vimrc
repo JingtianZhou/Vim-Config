@@ -23,11 +23,16 @@ nnoremap <leader>wq :wq<CR>
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>s :split
 nnoremap <leader>sv :vsplit
-"inoremap kk <ESC>
+nnoremap <leader>j J
 
 nnoremap <C-a> ^
 nnoremap <C-e> $
-nnoremap 00 ^
+"nnoremap 00 ^
+nnoremap J 10j
+nnoremap K 10k
+nnoremap <Tab> ^
+nnoremap <Down> gj
+nnoremap <Up> gk
 
 "insert mode
 inoremap <C-a> <ESC>I
