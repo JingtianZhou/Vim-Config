@@ -15,7 +15,8 @@ set autoindent
 " 允许折叠
 set foldenable
 " set foldmethod = manual
-noremap  <expr>0     col('.') == 1 ? '^': '0'
+"nnoremap  <expr>0     col('.') == 1 ? '^': '0'
+nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
 
 let mapleader=" "
 " 退出
@@ -37,9 +38,14 @@ nnoremap <Up> gk
 "insert mode
 inoremap <C-a> <ESC>I
 inoremap <C-e> <ESC>A
+inoremap <Down> <ESC>gji
+inoremap <Up> <ESC>gki
 
 " visual mode 
 vnoremap j gj
 vnoremap k gk
+vnoremap J 10j
+vnoremap K 10k
 vnoremap <C-a> ^
 vnoremap <C-e> $
+vnoremap <leader>j J
