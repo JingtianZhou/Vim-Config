@@ -7,14 +7,23 @@ set nocompatible	" Use Vim defaults instead of 100% vi compatibility
 set backspace=2		" more powerful backspacing
 
 let skip_defaults_vim=1
+
 syntax enable
+set background=dark
+set termguicolors
+colorscheme solarized8
+set guifont=Cambria
+
+set number
 " 文件自动缩进
 set cindent
 " 自动对齐
 set autoindent
 " 允许折叠
 set foldenable
-" set foldmethod = manual
+" 注释暗化
+"hi comment ctermfg=0 
+
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
 
