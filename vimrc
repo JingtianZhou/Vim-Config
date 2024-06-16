@@ -50,6 +50,10 @@ inoremap <C-e> <ESC>A
 inoremap <Down> <ESC>gji
 inoremap <Up> <ESC>gki
 
+inoremap ( ()<LEFT>
+inoremap { {}<LEFT>
+inoremap [ []<LEFT>
+
 " visual mode 
 vnoremap j gj
 vnoremap k gk
