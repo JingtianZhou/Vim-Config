@@ -13,6 +13,7 @@ set background=dark
 set termguicolors
 colorscheme solarized8
 set guifont=Cambria
+set mouse=r
 
 set number
 " 文件自动缩进
