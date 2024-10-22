@@ -24,10 +24,10 @@ set autoindent
 set foldenable
 " 注释暗化
 "hi comment ctermfg=0 
+set clipboard=unnamed
 
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
-
 let mapleader=" "
 " 退出
 nnoremap <leader>wq :wq<CR>
@@ -35,6 +35,11 @@ nnoremap <leader>q :q!<CR>
 nnoremap <leader>s :split
 nnoremap <leader>sv :vsplit
 nnoremap <leader>j J
+
+"number incresing
+nnoremap _ <C-x>
+nnoremap + <C-a>
+vnoremap + <C-a>
 
 nnoremap <C-a> ^
 nnoremap <C-e> $
@@ -60,6 +65,6 @@ vnoremap j gj
 vnoremap k gk
 vnoremap J 10j
 vnoremap K 10k
-vnoremap <C-a> ^
+"vnoremap <C-a> ^
 vnoremap <C-e> $
 vnoremap <leader>j J
