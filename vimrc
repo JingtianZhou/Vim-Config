@@ -1,6 +1,9 @@
 " Configuration file for vim
 set modelines=0		" CVE-2007-2438
 
+set ignorecase
+set tabstop=2
+
 " Normally we use vim-extensions. If you want true vi-compatibility
 " remove change the following statements
 set nocompatible	" Use Vim defaults instead of 100% vi compatibility
@@ -38,6 +41,7 @@ nnoremap <leader>j J
 
 "number incresing
 nnoremap _ <C-x>
+vnoremap _ <C-x>
 nnoremap + <C-a>
 vnoremap + <C-a>
 
@@ -59,6 +63,8 @@ inoremap <Up> <ESC>gki
 inoremap ( ()<LEFT>
 inoremap { {}<LEFT>
 inoremap [ []<LEFT>
+
+inoremap <C-d> Del
 
 " visual mode 
 vnoremap j gj
