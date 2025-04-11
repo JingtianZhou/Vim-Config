@@ -3,6 +3,8 @@ set modelines=0		" CVE-2007-2438
 
 set ignorecase
 set tabstop=2
+set shiftwidth=4
+set expandtab
 
 " Normally we use vim-extensions. If you want true vi-compatibility
 " remove change the following statements
@@ -74,3 +76,6 @@ vnoremap K 10k
 "vnoremap <C-a> ^
 vnoremap <C-e> $
 vnoremap <leader>j J
+
+" Load XML comment functions
+source ~/.vim/xml_comment.vim
