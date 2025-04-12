@@ -36,20 +36,54 @@ function! ToggleXMLCommentBlock()
     let l:last = getline(l:end)
     let l:first_indent = matchstr(l:first, '^\s*')
     let l:last_indent = matchstr(l:last, '^\s*')
-    let l:first_stripped = substitute(l:first, '^\s*', '', '')
-    let l:last_stripped = substitute(l:last, '^\s*', '', '')
 
-    if l:first_stripped =~ '^<!--' && l:last_stripped =~ '-->\s*$'
-        let l:first = substitute(l:first, '<!--\s*', '', '')
-        let l:last = substitute(l:last, '\s*-->\s*$', '', '')
-    else
-        let l:first = l:first_indent . '<!-- ' . substitute(l:first, '^\s*', '', '')
-        let l:last = l:last_indent . substitute(l:last, '^\s*', '', '') . ' -->'
+    " Detect if already commented
+    let l:commented = 0
+    if l:first =~ '^\s*<!--' && l:last =~ '-->\s*$'
+        let l:commented = 1
     endif
 
-    call setline(l:start, l:first)
-    call setline(l:end, l:last)
+    if l:commented
+        " === Uncomment all styles ===
+        for l:lnum in range(l:start, l:end)
+            let l:line = getline(l:lnum)
+
+            " Preserve original indentation
+            let l:indent = matchstr(l:line, '^\s*')
+
+            " Strip <!-- and -->
+            let l:line = substitute(l:line, '^\s*<!--\s*', '', '')
+            let l:line = substitute(l:line, '\s*-->\s*$', '', '')
+
+            " Trim spaces
+            let l:line = substitute(l:line, '^\s*', '', '')
+            let l:line = substitute(l:line, '\s*$', '', '')
+
+            " Ensure line starts with < and ends with >
+            if l:line !~ '^<'
+                let l:line = '<' . l:line
+            endif
+            if l:line !~ '>$'
+                let l:line = l:line . '>'
+            endif
+
+            " Set final line with indent
+            call setline(l:lnum, l:indent . l:line)
+        endfor
+    else
+        " === Comment ===
+        " Replace first < with <!--
+        let l:line = getline(l:start)
+        let l:line = substitute(l:line, '^\(\s*\)<', '\1<!-- ', '')
+        call setline(l:start, l:line)
+
+        " Replace last > with -->
+        let l:line = getline(l:end)
+        let l:line = substitute(l:line, '>\s*$', ' -->', '')
+        call setline(l:end, l:line)
+    endif
 endfunction
+
 " === BASH LINE COMMENT ===
 function! ToggleBashCommentLine()
     let l:line = getline('.')
@@ -120,4 +154,4 @@ endfunction
 
 " === MAPPINGS ===
 nnoremap gc :call ToggleCommentLine()<CR>
-xnoremap gc :<C-u>call ToggleCommentBlock()<CR>
+vnoremap gc :<C-u>call ToggleCommentBlock()<CR>
