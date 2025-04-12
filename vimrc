@@ -2,7 +2,7 @@
 set modelines=0		" CVE-2007-2438
 
 set ignorecase
-set tabstop=2
+set tabstop=4
 set shiftwidth=4
 set expandtab
 
@@ -34,7 +34,6 @@ set clipboard=unnamed
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
 let mapleader=" "
-" 退出
 nnoremap <leader>wq :wq<CR>
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>s :split
@@ -55,6 +54,8 @@ nnoremap K 10k
 nnoremap <Tab> ^
 nnoremap <Down> gj
 nnoremap <Up> gk
+nnoremap > I<Tab><ESC>
+nnoremap < I<BS><BS><BS><BS><ESC>
 
 "insert mode
 inoremap <C-a> <ESC>I
@@ -66,7 +67,7 @@ inoremap ( ()<LEFT>
 inoremap { {}<LEFT>
 inoremap [ []<LEFT>
 
-inoremap <C-d> Del
+inoremap <C-d> <Del>
 
 " visual mode 
 vnoremap j gj
@@ -79,3 +80,4 @@ vnoremap <leader>j J
 
 " Load XML comment functions
 source ~/.vim/xml_comment.vim
+source ~/.vim/fix_indent.vim
