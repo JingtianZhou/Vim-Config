@@ -104,10 +104,7 @@ function! ToggleBashCommentBlock()
     let l:end = line("'>")
     let l:commented = 1
 
-    " Capture the indentation of the first line
-    let l:indent = matchstr(getline(l:start), '^\s*')
-
-    " Check if all lines are commented
+    " Detect if all lines are commented
     for l:lnum in range(l:start, l:end)
         if getline(l:lnum) !~ '^\s*#'
             let l:commented = 0
@@ -115,17 +112,20 @@ function! ToggleBashCommentBlock()
         endif
     endfor
 
-    " Toggle comments
+    " Toggle each line
     for l:lnum in range(l:start, l:end)
         let l:line = getline(l:lnum)
+
         if l:commented
-            " Uncomment
-            let l:line = substitute(l:line, '^\s*#\s*', '', '')
+            let l:line = substitute(l:line, '^\(\s*\)#\s\{1,2}', '\1', '')
         else
-            " Comment
-            let l:line = substitute(l:line, '^\s*', '# ', '')
+            " Comment: add # at the very beginning (before indent)
+            let l:indent = matchstr(l:line, '^\s*')
+            let l:content = substitute(l:line, '^\s*', '', '')
+            let l:line = l:indent . '#  ' . l:content
         endif
-        call setline(l:lnum, l:indent . l:line)
+
+        call setline(l:lnum, l:line)
     endfor
 endfunction
 
