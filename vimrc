@@ -81,3 +81,4 @@ vnoremap <leader>j J
 " Load XML comment functions
 source ~/.vim/xml_comment.vim
 source ~/.vim/fix_indent.vim
+source ~/.vim/surround.vim
