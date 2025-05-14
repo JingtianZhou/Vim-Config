@@ -82,3 +82,6 @@ vnoremap <leader>j J
 source ~/.vim/xml_comment.vim
 source ~/.vim/fix_indent.vim
 source ~/.vim/surround.vim
+" Delete closing )
+source ~/.vim/delimitMate.vim
+let g:delimitMate_expand_cr = 1
