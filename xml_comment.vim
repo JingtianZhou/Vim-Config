@@ -129,13 +129,83 @@ function! ToggleBashCommentBlock()
     endfor
 endfunction
 
+" === CPP LINE COMMENT ===
+function! ToggleCPPCommentLine()
+    let l:line = getline('.')
+    let l:indent = matchstr(l:line, '^\s*')
+
+    if l:line =~ '^\s*//'
+        " Uncomment: remove //
+        let l:content = substitute(l:line, '^\s*//\s*', '', '')
+    else
+        " Comment: add //
+        let l:content = '// ' . substitute(l:line, '^\s*', '', '')
+    endif
+
+    call setline('.', l:indent . l:content)
+endfunction
+
+" === CPP BLOCK COMMENT ===
+function! ToggleCPPCommentBlock()
+    let l:start = line("'<")
+    let l:end = line("'>")
+
+    " If only one line is selected, toggle line-style comment
+    if l:start == l:end
+        call ToggleCppCommentLine()
+        return
+    endif
+
+    let l:first = getline(l:start)
+    let l:last = getline(l:end)
+    let l:first_indent = matchstr(l:first, '^\s*')
+    let l:last_indent = matchstr(l:last, '^\s*')
+
+    " Detect if block is already commented
+    let l:commented = 0
+    if l:first =~ '^\s*/\*' && l:last =~ '\*/\s*$'
+        let l:commented = 1
+    endif
+
+    if l:commented
+        " === Uncomment ===
+        for l:lnum in range(l:start, l:end)
+            let l:line = getline(l:lnum)
+            let l:indent = matchstr(l:line, '^\s*')
+
+            " First line: remove leading /*
+            if l:lnum == l:start
+                let l:line = substitute(l:line, '^\s*/\*\s*', '', '')
+            endif
+
+            " Last line: remove trailing */
+            if l:lnum == l:end
+                let l:line = substitute(l:line, '\s*\*/\s*$', '', '')
+            endif
+
+            call setline(l:lnum, l:indent . substitute(l:line, '^\s*', '', ''))
+        endfor
+    else
+        " === Comment ===
+        " First line: insert /* after indentation
+        let l:line = substitute(l:first, '^\s*', '', '')
+        call setline(l:start, l:first_indent . '/* ' . l:line)
+
+        " Last line: append */ before newline
+        let l:line = substitute(l:last, '^\s*', '', '')
+        call setline(l:end, l:last_indent . l:line . ' */')
+    endif
+endfunction
+
 " === UNIVERSAL DISPATCHERS ===
 function! ToggleCommentLine()
     let l:ext = expand('%:e')
     if l:ext ==# 'xml'
         call ToggleXMLCommentLine()
-    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'bash'
+    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py'
         call ToggleBashCommentLine()
+    elseif l:ext ==# 'cpp' || l:ext ==# 'h'
+        call ToggleCPPCommentLine()
     else
         echo "Unsupported file extension: " . l:ext
     endif
@@ -145,8 +215,10 @@ function! ToggleCommentBlock()
     let l:ext = expand('%:e')
     if l:ext ==# 'xml'
         call ToggleXMLCommentBlock()
-    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'bash'
+    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py'
         call ToggleBashCommentBlock()
+    elseif l:ext ==# 'h' || l:ext ==# 'cpp'
+        call ToggleCPPCommentBlock()
     else
         echo "Unsupported file extension: " . l:ext
     endif
