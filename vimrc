@@ -1,26 +1,54 @@
-" Configuration file for vim
-set modelines=0		" CVE-2007-2438
+" Vim plug
+call plug#begin()
+    Plug 'prabirshrestha/vim-lsp'
+    Plug 'prabirshrestha/asyncomplete.vim'
+    Plug 'prabirshrestha/asyncomplete-lsp.vim'
+    Plug 'prabirshrestha/asyncomplete-file.vim'
+    " theme
+    Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
+    Plug 'nordtheme/vim'
+    Plug 'ghifarit53/tokyonight-vim'
+    "
+    Plug 'itchyny/lightline.vim' " Bottom light line
+    " File tree explorer
+    Plug 'preservim/nerdtree'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'PhilRunninger/nerdtree-visual-selection'
+call plug#end()
 
+" Themes
+set termguicolors
+let g:tokyonight_style = 'storm' " available: night, storm
+let g:tokyonight_enable_italic = 1
+" let g:tokyonight_transparent_background = 1
+colorscheme nord
+set background=dark
+ set guifont=Cambria
+set laststatus=2 "lightline
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
+
+" File explorer
+nnoremap <leader>e :NERDTreeToggle<CR>
+nnoremap <leader>b :NERDTreeFocus<CR>
+nnoremap <leader>f :NERDTreeFind<CR>
+
+" Configuration file for vim
+set modelines=0		
 set ignorecase
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set shiftround
-
+syntax enable
 " Normally we use vim-extensions. If you want true vi-compatibility
 " remove change the following statements
 set nocompatible	" Use Vim defaults instead of 100% vi compatibility
 set backspace=2		" more powerful backspacing
-
 let skip_defaults_vim=1
 
-syntax enable
-set background=dark
-set termguicolors
-colorscheme solarized8
-set guifont=Cambria
 set mouse=r
-
 set number
 " 文件自动缩进
 set cindent
@@ -29,7 +57,6 @@ set autoindent
 " 允许折叠
 set foldenable
 " 注释暗化
-"hi comment ctermfg=0 
 set clipboard=unnamed
 
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
@@ -92,13 +119,6 @@ tnoremap <C-\> <C-\><C-n>:q!<CR>
 nnoremap < <<
 nnoremap > I<Tab><ESC>
 
-" Vim plug
-call plug#begin()
-    Plug 'prabirshrestha/vim-lsp'
-    Plug 'prabirshrestha/asyncomplete.vim'
-    Plug 'prabirshrestha/asyncomplete-lsp.vim'
-call plug#end()
-
 " Enable asyncomplete
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_remove_duplicates = 1
@@ -140,6 +160,17 @@ augroup lsp_install
     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'allowlist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+" Use arrow or tab to select auto-suggestion
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"

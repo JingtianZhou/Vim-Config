@@ -197,6 +197,50 @@ function! ToggleCPPCommentBlock()
     endif
 endfunction
 
+" === VIM LINE COMMENT ===
+function! ToggleVIMCommentLine()
+    let l:line = getline('.')
+    let l:indent = matchstr(l:line, '^\s*')
+    if l:line =~ '^\s*\"'
+        " Uncomment
+        let l:line = substitute(l:line, '^\s*\"\s*', '', '')
+    else
+        " Comment
+        let l:line = substitute(l:line, '^\s*', '\" ', '')
+    endif
+    call setline('.', l:indent . l:line)
+endfunction
+" === VIM BLOCK COMMENT ===
+function! ToggleVIMCommentBlock()
+    let l:start = line("'<")
+    let l:end = line("'>")
+    let l:commented = 1
+
+    " Detect if all lines are commented
+    for l:lnum in range(l:start, l:end)
+        if getline(l:lnum) !~ '^\s*\"'
+            let l:commented = 0
+            break
+        endif
+    endfor
+
+    " Toggle each line
+    for l:lnum in range(l:start, l:end)
+        let l:line = getline(l:lnum)
+
+        if l:commented
+            let l:line = substitute(l:line, '^\(\s*\)\"\s\{1,2}', '\1', '')
+        else
+            " Comment: add " at the very beginning (before indent)
+            let l:indent = matchstr(l:line, '^\s*')
+            let l:content = substitute(l:line, '^\s*', '', '')
+            let l:line = l:indent . '"  ' . l:content
+        endif
+
+        call setline(l:lnum, l:line)
+    endfor
+endfunction
+
 " === UNIVERSAL DISPATCHERS ===
 function! ToggleCommentLine()
     let l:ext = expand('%:e')
@@ -206,6 +250,8 @@ function! ToggleCommentLine()
         call ToggleBashCommentLine()
     elseif l:ext ==# 'cpp' || l:ext ==# 'h'
         call ToggleCPPCommentLine()
+    elseif l:ext ==# 'vimrc' || l:ext ==# 'vim' || l:ext ==# ''
+        call ToggleVIMCommentLine()
     else
         echo "Unsupported file extension: " . l:ext
     endif
@@ -219,6 +265,8 @@ function! ToggleCommentBlock()
         call ToggleBashCommentBlock()
     elseif l:ext ==# 'h' || l:ext ==# 'cpp'
         call ToggleCPPCommentBlock()
+    elseif l:ext ==# 'vimrc' || l:ext ==# 'vim' || l:ext ==# ''
+        call ToggleVIMCommentBlock()
     else
         echo "Unsupported file extension: " . l:ext
     endif
