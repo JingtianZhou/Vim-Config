@@ -1,5 +1,6 @@
 " Vim plug
 call plug#begin()
+    Plug 'ojroques/vim-oscyank', {'branch': 'main'}
     Plug 'prabirshrestha/vim-lsp'
     Plug 'prabirshrestha/asyncomplete.vim'
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
@@ -7,14 +8,14 @@ call plug#begin()
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
-    Plug 'ghifarit53/tokyonight-vim'
-    "
+    :
     Plug 'itchyny/lightline.vim' " Bottom light line
     " File tree explorer
     Plug 'preservim/nerdtree'
     Plug 'ryanoasis/vim-devicons'
     Plug 'PhilRunninger/nerdtree-visual-selection'
 call plug#end()
+let mapleader=" "
 
 " Themes
 set termguicolors
@@ -33,7 +34,20 @@ let g:lightline = {
 nnoremap <leader>e :NERDTreeToggle<CR>
 nnoremap <leader>b :NERDTreeFocus<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
+let g:NERDTreeMapOpenSplit = '-'
+let g:NERDTreeMapOpenVSplit = '\'
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
+" New tab
+nnoremap <leader>t :tabnew<CR>
+nnoremap [ gt
+nnoremap ] gT
+
+" Clipboard
+nnoremap <leader>y <Plug>OSCYankOperator 
+nnoremap <leader>yy <Plug>OSCYankOperator_
+vnoremap <leader>y <Plug>OSCYankVisual
 " Configuration file for vim
 set modelines=0		
 set ignorecase
@@ -42,6 +56,7 @@ set shiftwidth=4
 set expandtab
 set shiftround
 syntax enable
+set encoding=UTF-8
 " Normally we use vim-extensions. If you want true vi-compatibility
 " remove change the following statements
 set nocompatible	" Use Vim defaults instead of 100% vi compatibility
@@ -61,7 +76,6 @@ set clipboard=unnamed
 
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
-let mapleader=" "
 nnoremap <leader>wq :wq<CR>
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>s :split
