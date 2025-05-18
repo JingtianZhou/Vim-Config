@@ -8,20 +8,21 @@ call plug#begin()
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
-    :
     Plug 'itchyny/lightline.vim' " Bottom light line
     " File tree explorer
     Plug 'preservim/nerdtree'
     Plug 'ryanoasis/vim-devicons'
     Plug 'PhilRunninger/nerdtree-visual-selection'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
 call plug#end()
 let mapleader=" "
 
 " Themes
 set termguicolors
-let g:tokyonight_style = 'storm' " available: night, storm
-let g:tokyonight_enable_italic = 1
-" let g:tokyonight_transparent_background = 1
+"  let g:tokyonight_style = 'storm' " available: night, storm
+"  let g:tokyonight_enable_italic = 1
+"  let g:tokyonight_transparent_background = 1
 colorscheme nord
 set background=dark
  set guifont=Cambria
@@ -43,6 +44,9 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTa
 nnoremap <leader>t :tabnew<CR>
 nnoremap [ gt
 nnoremap ] gT
+
+" Fzf
+nnoremap <leader>f :FZF<CR>
 
 " Clipboard
 nnoremap <leader>y <Plug>OSCYankOperator 
