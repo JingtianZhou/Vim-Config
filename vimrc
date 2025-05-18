@@ -5,6 +5,7 @@ call plug#begin()
     Plug 'prabirshrestha/asyncomplete.vim'
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
     Plug 'prabirshrestha/asyncomplete-file.vim'
+    Plug 'keremc/asyncomplete-clang.vim'
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
@@ -47,6 +48,10 @@ nnoremap ] gT
 
 " Fzf
 nnoremap <leader>f :FZF<CR>
+let g:fzf_action = {
+   \ 'ctrl-t': 'tab split',
+   \ 'ctrl-x': 'split',
+   \ 'ctrl-v': 'vsplit' }
 
 " Clipboard
 nnoremap <leader>y <Plug>OSCYankOperator 
@@ -131,7 +136,7 @@ source ~/.vim/delimitMate.vim
 " let g:delimitMate_expand_cr = 1
 
 nnoremap <C-\> :terminal<CR>
-tnoremap <Esc> <C-\><C-n>
+" tnoremap <Esc> <C-\><C-n>
 tnoremap <C-\> <C-\><C-n>:q!<CR>
 
 nnoremap < <<
@@ -184,6 +189,17 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ 'allowlist': ['*'],
     \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+autocmd User asyncomplete_setup call asyncomplete#register_source(
+    \ asyncomplete#sources#clang#get_source_options({
+    \     'config': {
+    \         'clang_path': '$HOME/usr/local/llvm/bin/clang',
+    \         'clang_args': {
+    \             'default': ['-I$HOME/usr/local/llvm/include'],
+    \             'cpp': ['-std=c++11', '-I$HOME/usr/local/llvm/include']
+    \         }
+    \     }
     \ }))
 
 " Use arrow or tab to select auto-suggestion
