@@ -5,7 +5,9 @@ call plug#begin()
     Plug 'prabirshrestha/asyncomplete.vim'
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
     Plug 'prabirshrestha/asyncomplete-file.vim'
+    Plug 'prabirshrestha/async.vim'
     Plug 'keremc/asyncomplete-clang.vim'
+    Plug 'rhysd/vim-clang-format'
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
@@ -57,6 +59,9 @@ let g:fzf_action = {
 nnoremap <leader>y <Plug>OSCYankOperator 
 nnoremap <leader>yy <Plug>OSCYankOperator_
 vnoremap <leader>y <Plug>OSCYankVisual
+
+" Clang format
+nnoremap <leader>cf :ClangFormat<CR>
 " Configuration file for vim
 set modelines=0		
 set ignorecase
@@ -192,15 +197,7 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ }))
 
 autocmd User asyncomplete_setup call asyncomplete#register_source(
-    \ asyncomplete#sources#clang#get_source_options({
-    \     'config': {
-    \         'clang_path': '$HOME/usr/local/llvm/bin/clang',
-    \         'clang_args': {
-    \             'default': ['-I$HOME/usr/local/llvm/include'],
-    \             'cpp': ['-std=c++11', '-I$HOME/usr/local/llvm/include']
-    \         }
-    \     }
-    \ }))
+    \ asyncomplete#sources#clang#get_source_options())
 
 " Use arrow or tab to select auto-suggestion
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
