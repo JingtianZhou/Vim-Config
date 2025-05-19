@@ -5,8 +5,8 @@ call plug#begin()
     Plug 'prabirshrestha/asyncomplete.vim'
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
     Plug 'prabirshrestha/asyncomplete-file.vim'
-    Plug 'prabirshrestha/async.vim'
     Plug 'keremc/asyncomplete-clang.vim'
+""    Plug 'piec/vim-lsp-clangd'
     Plug 'rhysd/vim-clang-format'
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
@@ -37,9 +37,9 @@ let g:lightline = {
 " File explorer
 nnoremap <leader>e :NERDTreeToggle<CR>
 nnoremap <leader>b :NERDTreeFocus<CR>
-nnoremap <leader>f :NERDTreeFind<CR>
-let g:NERDTreeMapOpenSplit = '-'
-let g:NERDTreeMapOpenVSplit = '\'
+" nnoremap <leader>f :NERDTreeFind<CR>
+let g:NERDTreeMapOpenSplit = '<C-s>'
+let g:NERDTreeMapOpenVSplit = '<C-v>'
 " Close the tab if NERDTree is the only window remaining in it.
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
@@ -173,7 +173,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> <leader>rn <plug>(lsp-rename)
     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
+    " nmap <buffer> K <plug>(lsp-hover)
     nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
     nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
@@ -195,6 +195,16 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
+
+" Registering clangd LSP with asyncomplete
+if executable('clangd')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clangd',
+        \ 'cmd': {server_info->['clangd']},
+        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ })
+endif
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 
 autocmd User asyncomplete_setup call asyncomplete#register_source(
     \ asyncomplete#sources#clang#get_source_options())
