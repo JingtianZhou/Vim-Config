@@ -6,6 +6,7 @@ call plug#begin()
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
     Plug 'prabirshrestha/asyncomplete-file.vim'
     Plug 'keremc/asyncomplete-clang.vim'
+    Plug 'ervandew/supertab'
 ""    Plug 'piec/vim-lsp-clangd'
     Plug 'rhysd/vim-clang-format'
     " theme
@@ -47,6 +48,9 @@ nnoremap <leader>b :NERDTreeFocus<CR>
 " nnoremap <leader>f :NERDTreeFind<CR>
 let g:NERDTreeMapOpenSplit = '<C-s>'
 let g:NERDTreeMapOpenVSplit = '<C-v>'
+" Start NERDTree when Vim is started without file arguments.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " Close the tab if NERDTree is the only window remaining in it.
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
@@ -152,7 +156,7 @@ nnoremap <C-\> :terminal<CR>
 tnoremap <C-\> <C-\><C-n>:q!<CR>
 
 nnoremap < <<
-nnoremap > I<Tab><ESC>
+nnoremap > >>
 
 " Enable asyncomplete
 let g:asyncomplete_auto_popup = 1
