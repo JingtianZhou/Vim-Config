@@ -27,8 +27,15 @@ set termguicolors
 "  let g:tokyonight_enable_italic = 1
 "  let g:tokyonight_transparent_background = 1
 colorscheme nord
+let g:nord_italic_comments = 1
+augroup nord
+    autocmd!
+    autocmd ColorScheme * highlight shDerefSimple ctermfg=6 guifg=#88C0D0
+    autocmd ColorScheme * highlight shDerefVar ctermfg=6 guifg=#88C0D0
+    autocmd ColorScheme * highlight shVariable ctermfg=6 guifg=#88C0D0
+augroup END
 set background=dark
- set guifont=Cambria
+set guifont=Cambria
 set laststatus=2 "lightline
 let g:lightline = {
       \ 'colorscheme': 'wombat',
