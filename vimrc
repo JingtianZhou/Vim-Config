@@ -62,7 +62,7 @@ nnoremap ] gT
 " Fzf
 nnoremap <leader>f :FZF<CR>
 let g:fzf_action = {
-   \ 'ctrl-t': 'tab split',
+   \ 't': 'tab split',
    \ 'ctrl-x': 'split',
    \ 'ctrl-v': 'vsplit' }
 
@@ -118,7 +118,6 @@ nnoremap <C-e> $
 "nnoremap 00 ^
 nnoremap J 10j
 nnoremap K 10k
-nnoremap <Tab> ^
 nnoremap <Down> gj
 nnoremap <Up> gk
 
@@ -128,6 +127,7 @@ inoremap <C-e> <ESC>A
 inoremap <Down> <ESC>gji
 inoremap <Up> <ESC>gki
 
+nnoremap <C-i> <Tab>
 inoremap ( ()<LEFT>
 inoremap { {}<LEFT>
 inoremap [ []<LEFT>
