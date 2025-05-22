@@ -7,8 +7,9 @@ call plug#begin()
     Plug 'prabirshrestha/asyncomplete-file.vim'
     Plug 'keremc/asyncomplete-clang.vim'
     Plug 'ervandew/supertab'
-""    Plug 'piec/vim-lsp-clangd'
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     Plug 'rhysd/vim-clang-format'
+""    Plug 'piec/vim-lsp-clangd'
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
