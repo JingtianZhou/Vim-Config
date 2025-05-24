@@ -246,7 +246,7 @@ function! ToggleCommentLine()
     let l:ext = expand('%:e')
     if l:ext ==# 'xml'
         call ToggleXMLCommentLine()
-    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py'
+    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py' || l:ext ==# 'zshrc'
         call ToggleBashCommentLine()
     elseif l:ext ==# 'cpp' || l:ext ==# 'h'
         call ToggleCPPCommentLine()
@@ -261,7 +261,7 @@ function! ToggleCommentBlock()
     let l:ext = expand('%:e')
     if l:ext ==# 'xml'
         call ToggleXMLCommentBlock()
-    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py'
+    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py' || l:ext ==# 'zshrc'
         call ToggleBashCommentBlock()
     elseif l:ext ==# 'h' || l:ext ==# 'cpp'
         call ToggleCPPCommentBlock()
@@ -272,6 +272,40 @@ function! ToggleCommentBlock()
     endif
 endfunction
 
+function! ToggleComment(mode)
+  let l:ext = expand('%:e')
+  let l:filename = expand('%:t')
+  let l:is_block = a:mode
+
+  if l:ext ==# 'xml'
+    if l:is_block
+      call ToggleXMLCommentBlock()
+    else
+      call ToggleXMLCommentLine()
+    endif
+  elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py' || l:filename ==# '.zshrc'
+    if l:is_block
+      call ToggleBashCommentBlock()
+    else
+      call ToggleBashCommentLine()
+    endif
+  elseif l:ext ==# 'cpp' || l:ext ==# 'h'
+    if l:is_block
+      call ToggleCPPCommentBlock()
+    else
+      call ToggleCPPCommentLine()
+    endif
+  elseif l:filename ==# 'vimrc' || l:ext ==# 'vim' || l:ext ==# ''
+    if l:is_block
+      call ToggleVIMCommentBlock()
+    else
+      call ToggleVIMCommentLine()
+    endif
+  else
+    echo "Unsupported file extension: " . l:ext
+  endif
+endfunction
+
 " === MAPPINGS ===
-nnoremap gc :call ToggleCommentLine()<CR>
-vnoremap gc :<C-u>call ToggleCommentBlock()<CR>
+nnoremap gc :call ToggleComment(0)<CR>
+vnoremap gc :<C-u>call ToggleComment(1)<CR>
