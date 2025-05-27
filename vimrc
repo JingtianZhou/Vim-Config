@@ -53,7 +53,7 @@ nnoremap <leader>b :NERDTreeFocus<CR>
 let g:NERDTreeMapOpenSplit = '<C-s>'
 let g:NERDTreeMapOpenVSplit = '<C-v>'
 " Start NERDTree when Vim is started without file arguments.
-autocmd StdinReadPre * let s:std_in=1
+" autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " Close the tab if NERDTree is the only window remaining in it.
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
@@ -65,6 +65,7 @@ nnoremap ] gT
 
 " Fzf
 nnoremap <leader>f :FZF<CR>
+nnoremap <leader>F :FZF ../<CR>
 let g:fzf_action = {
    \ 't': 'tab split',
    \ 'ctrl-x': 'split',
