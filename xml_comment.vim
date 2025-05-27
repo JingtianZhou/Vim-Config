@@ -289,7 +289,7 @@ function! ToggleComment(mode)
     else
       call ToggleBashCommentLine()
     endif
-  elseif l:ext ==# 'cpp' || l:ext ==# 'h'
+  elseif l:ext ==# 'cpp' || l:ext ==# 'h' || l:ext ==# 'hpp'
     if l:is_block
       call ToggleCPPCommentBlock()
     else

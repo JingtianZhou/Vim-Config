@@ -54,7 +54,7 @@ let g:NERDTreeMapOpenSplit = '<C-s>'
 let g:NERDTreeMapOpenVSplit = '<C-v>'
 " Start NERDTree when Vim is started without file arguments.
 " autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+" autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " Close the tab if NERDTree is the only window remaining in it.
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
@@ -66,8 +66,9 @@ nnoremap ] gT
 " Fzf
 nnoremap <leader>f :FZF<CR>
 nnoremap <leader>F :FZF ../<CR>
+nnoremap <leader>h :History<CR>
 let g:fzf_action = {
-   \ 't': 'tab split',
+   \ 'ctrl-n': 'tab split',
    \ 'ctrl-x': 'split',
    \ 'ctrl-v': 'vsplit' }
 
@@ -159,6 +160,7 @@ source ~/.vim/surround.vim
 source ~/.vim/delimitMate.vim
 " let g:delimitMate_expand_cr = 1
 
+" terminal
 nnoremap <C-\> :terminal<CR>
 " tnoremap <Esc> <C-\><C-n>
 tnoremap <C-\> <C-\><C-n>:q!<CR>
