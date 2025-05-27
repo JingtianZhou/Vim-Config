@@ -23,6 +23,9 @@ call plug#begin()
 call plug#end()
 let mapleader=" "
 
+" Supertab
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
 " Themes
 set termguicolors
 "  let g:tokyonight_style = 'storm' " available: night, storm
@@ -88,6 +91,9 @@ set encoding=UTF-8
 set nocompatible	" Use Vim defaults instead of 100% vi compatibility
 set backspace=2		" more powerful backspacing
 let skip_defaults_vim=1
+
+" Disable auto comment next line
+autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
 
 set mouse=r
 set number
