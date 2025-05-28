@@ -84,51 +84,6 @@ function! ToggleXMLCommentBlock()
     endif
 endfunction
 
-" === BASH LINE COMMENT ===
-function! ToggleBashCommentLine()
-    let l:line = getline('.')
-    let l:indent = matchstr(l:line, '^\s*')
-    if l:line =~ '^\s*#'
-        " Uncomment
-        let l:line = substitute(l:line, '^\s*#\s*', '', '')
-    else
-        " Comment
-        let l:line = substitute(l:line, '^\s*', '# ', '')
-    endif
-    call setline('.', l:indent . l:line)
-endfunction
-
-" === BASH BLOCK COMMENT ===
-function! ToggleBashCommentBlock()
-    let l:start = line("'<")
-    let l:end = line("'>")
-    let l:commented = 1
-
-    " Detect if all lines are commented
-    for l:lnum in range(l:start, l:end)
-        if getline(l:lnum) !~ '^\s*#'
-            let l:commented = 0
-            break
-        endif
-    endfor
-
-    " Toggle each line
-    for l:lnum in range(l:start, l:end)
-        let l:line = getline(l:lnum)
-
-        if l:commented
-            let l:line = substitute(l:line, '^\(\s*\)#\s\{1,2}', '\1', '')
-        else
-            " Comment: add # at the very beginning (before indent)
-            let l:indent = matchstr(l:line, '^\s*')
-            let l:content = substitute(l:line, '^\s*', '', '')
-            let l:line = l:indent . '#  ' . l:content
-        endif
-
-        call setline(l:lnum, l:line)
-    endfor
-endfunction
-
 " === CPP LINE COMMENT ===
 function! ToggleCPPCommentLine()
     let l:line = getline('.')
@@ -197,28 +152,32 @@ function! ToggleCPPCommentBlock()
     endif
 endfunction
 
-" === VIM LINE COMMENT ===
-function! ToggleVIMCommentLine()
+function! ToggleCommentLine(symbol)
     let l:line = getline('.')
     let l:indent = matchstr(l:line, '^\s*')
-    if l:line =~ '^\s*\"'
+    let l:symbol_escaped = escape(a:symbol, '\')
+
+    " Check if line is already commented with the given symbol
+    if l:line =~ '^\s*' . l:symbol_escaped
         " Uncomment
-        let l:line = substitute(l:line, '^\s*\"\s*', '', '')
+        let l:line = substitute(l:line, '^\s*' . l:symbol_escaped . '\s*', '', '')
     else
         " Comment
-        let l:line = substitute(l:line, '^\s*', '\" ', '')
+        let l:line = substitute(l:line, '^\s*', l:symbol_escaped . ' ', '')
     endif
+
     call setline('.', l:indent . l:line)
 endfunction
-" === VIM BLOCK COMMENT ===
-function! ToggleVIMCommentBlock()
+" === BLOCK COMMENT ===
+function! ToggleCommentBlock(symbol)
     let l:start = line("'<")
     let l:end = line("'>")
+    let l:symbol_escaped = escape(a:symbol, '\')
     let l:commented = 1
 
-    " Detect if all lines are commented
+    " Check if all lines are already commented
     for l:lnum in range(l:start, l:end)
-        if getline(l:lnum) !~ '^\s*\"'
+        if getline(l:lnum) !~ '^\s*' . l:symbol_escaped
             let l:commented = 0
             break
         endif
@@ -229,47 +188,15 @@ function! ToggleVIMCommentBlock()
         let l:line = getline(l:lnum)
 
         if l:commented
-            let l:line = substitute(l:line, '^\(\s*\)\"\s\{1,2}', '\1', '')
+            let l:line = substitute(l:line, '^\(\s*\)' . l:symbol_escaped . '\s\{1,2}', '\1', '')
         else
-            " Comment: add " at the very beginning (before indent)
             let l:indent = matchstr(l:line, '^\s*')
             let l:content = substitute(l:line, '^\s*', '', '')
-            let l:line = l:indent . '"  ' . l:content
+            let l:line = l:indent . a:symbol . '  ' . l:content
         endif
 
         call setline(l:lnum, l:line)
     endfor
-endfunction
-
-" === UNIVERSAL DISPATCHERS ===
-function! ToggleCommentLine()
-    let l:ext = expand('%:e')
-    if l:ext ==# 'xml'
-        call ToggleXMLCommentLine()
-    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py' || l:ext ==# 'zshrc'
-        call ToggleBashCommentLine()
-    elseif l:ext ==# 'cpp' || l:ext ==# 'h'
-        call ToggleCPPCommentLine()
-    elseif l:ext ==# 'vimrc' || l:ext ==# 'vim' || l:ext ==# ''
-        call ToggleVIMCommentLine()
-    else
-        echo "Unsupported file extension: " . l:ext
-    endif
-endfunction
-
-function! ToggleCommentBlock()
-    let l:ext = expand('%:e')
-    if l:ext ==# 'xml'
-        call ToggleXMLCommentBlock()
-    elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py' || l:ext ==# 'zshrc'
-        call ToggleBashCommentBlock()
-    elseif l:ext ==# 'h' || l:ext ==# 'cpp'
-        call ToggleCPPCommentBlock()
-    elseif l:ext ==# 'vimrc' || l:ext ==# 'vim' || l:ext ==# ''
-        call ToggleVIMCommentBlock()
-    else
-        echo "Unsupported file extension: " . l:ext
-    endif
 endfunction
 
 function! ToggleComment(mode)
@@ -277,17 +204,19 @@ function! ToggleComment(mode)
   let l:filename = expand('%:t')
   let l:is_block = a:mode
 
-  if l:ext ==# 'xml'
+  let l:comment_map = {
+    \   '#': [ ['sh', 'zsh', 'py'], ['.zshrc'] ],
+    \   '"': [ ['vim', ''], ['vimrc'] ],
+    \   '%': [ ['m'], [] ]
+    \ }
+
+  let l:found = 0
+
+  if l:ext ==# 'xml' || l:ext ==# 'mcf'
     if l:is_block
       call ToggleXMLCommentBlock()
     else
       call ToggleXMLCommentLine()
-    endif
-  elseif l:ext ==# 'sh' || l:ext ==# 'zsh' || l:ext ==# 'py' || l:filename ==# '.zshrc'
-    if l:is_block
-      call ToggleBashCommentBlock()
-    else
-      call ToggleBashCommentLine()
     endif
   elseif l:ext ==# 'cpp' || l:ext ==# 'h' || l:ext ==# 'hpp'
     if l:is_block
@@ -295,14 +224,24 @@ function! ToggleComment(mode)
     else
       call ToggleCPPCommentLine()
     endif
-  elseif l:filename ==# 'vimrc' || l:ext ==# 'vim' || l:ext ==# ''
-    if l:is_block
-      call ToggleVIMCommentBlock()
-    else
-      call ToggleVIMCommentLine()
-    endif
-  else
-    echo "Unsupported file extension: " . l:ext
+  else  
+      for l:symbol in keys(l:comment_map)
+        let l:ext_list = l:comment_map[l:symbol][0]
+        let l:file_list = l:comment_map[l:symbol][1]
+
+        if index(l:ext_list, l:ext) >= 0 || index(l:file_list, l:filename) >= 0
+            let l:found = 1
+            if l:is_block
+                call ToggleCommentBlock(l:symbol)
+            else
+                call ToggleCommentLine(l:symbol)
+            endif
+            break
+        endif
+      endfor
+  endif
+  if !l:found
+        echo "Unsupported file: " . l:filename . " (ext: " . l:ext . ")"
   endif
 endfunction
 
