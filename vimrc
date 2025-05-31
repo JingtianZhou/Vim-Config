@@ -4,7 +4,7 @@ call plug#begin()
     Plug 'prabirshrestha/vim-lsp'
     Plug 'prabirshrestha/asyncomplete.vim'
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
-    " Plug 'prabirshrestha/asyncomplete-file.vim'
+    Plug 'prabirshrestha/asyncomplete-file.vim'
     Plug 'keremc/asyncomplete-clang.vim'
     Plug 'ervandew/supertab'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -210,12 +210,12 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-"  au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    "  \ 'name': 'file',
-    "  \ 'allowlist': ['*'],
-    "  \ 'priority': 10,
-    "  \ 'completor': function('asyncomplete#sources#file#completor')
-    "  \ }))
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'allowlist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
 
 " Registering clangd LSP with asyncomplete
 if executable('clangd')
