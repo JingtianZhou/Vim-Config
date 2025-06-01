@@ -26,6 +26,19 @@ let mapleader=" "
 " Supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
+" Transparent
+let t:is_transparent = 0
+function! Transparent()
+    if t:is_transparent == 0
+        hi Normal guibg=NONE ctermbg=NONE
+        let t:is_transparent = 1
+    else
+        set background=dark
+        let t:is_transparent = 0
+    endif
+endfunction
+autocmd VimEnter * call Transparent()
+
 " Themes
 set termguicolors
 "  let g:tokyonight_style = 'storm' " available: night, storm
