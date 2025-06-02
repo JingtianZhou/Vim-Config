@@ -206,7 +206,7 @@ function! ToggleComment(mode)
 
   let l:comment_map = {
     \   '#': [ ['sh', 'zsh', 'py'], ['.zshrc'] ],
-    \   '"': [ ['vim', ''], ['vimrc'] ],
+    \   '"': [ ['vim'], ['vimrc'] ],
     \   '%': [ ['m'], [] ]
     \ }
 
@@ -231,6 +231,7 @@ function! ToggleComment(mode)
 
         if index(l:ext_list, l:ext) >= 0 || index(l:file_list, l:filename) >= 0
             let l:found = 1
+            echo l:symbol l:file_list l:ext_list
             if l:is_block
                 call ToggleCommentBlock(l:symbol)
             else
@@ -239,6 +240,14 @@ function! ToggleComment(mode)
             break
         endif
       endfor
+      " Fallback if no match found
+      if l:found == 0
+          if l:is_block
+              call ToggleCommentBlock('#')
+          else
+              call ToggleCommentLine('#')
+          endif
+      endif
   endif
   if !l:found
         echo "Unsupported file: " . l:filename . " (ext: " . l:ext . ")"
