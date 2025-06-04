@@ -62,7 +62,7 @@ let g:lightline = {
 " File explorer
 nnoremap <leader>e :NERDTreeToggle<CR>
 nnoremap <leader>b :NERDTreeFocus<CR>
-" nnoremap <leader>f :NERDTreeFind<CR>
+nnoremap <leader>nf :NERDTreeFind<CR>
 let g:NERDTreeMapOpenSplit = '<C-s>'
 let g:NERDTreeMapOpenVSplit = '<C-v>'
 " Start NERDTree when Vim is started without file arguments.
@@ -70,6 +70,9 @@ let g:NERDTreeMapOpenVSplit = '<C-v>'
 " autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " Close the tab if NERDTree is the only window remaining in it.
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " New tab
 nnoremap <leader>t :tabnew<CR>
@@ -79,6 +82,7 @@ nnoremap ] gT
 " Fzf
 nnoremap <leader>f :FZF<CR>
 nnoremap <leader>F :FZF ../<CR>
+nnoremap <leader>fg :FZF ~/<CR>
 nnoremap <leader>h :History<CR>
 let g:fzf_action = {
    \ 'ctrl-n': 'tab split',
@@ -125,8 +129,8 @@ set clipboard=unnamed
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
 nnoremap <leader>wq :wq<CR>
 nnoremap <leader>q :q!<CR>
-nnoremap <leader>s :split
-nnoremap <leader>sv :vsplit
+nnoremap <leader>s :split<CR>
+nnoremap <leader>sv :vsplit<CR>
 nnoremap <leader>j J
 
 "number incresing
