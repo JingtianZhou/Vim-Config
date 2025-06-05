@@ -163,11 +163,9 @@ inoremap <Down> <ESC>gji
 inoremap <Up> <ESC>gki
 
 nnoremap <C-i> <Tab>
-inoremap ( ()<LEFT>
-inoremap { {}<LEFT>
-inoremap [ []<LEFT>
-
 inoremap <C-d> <Del>
+
+
 
 " visual mode 
 vnoremap j gj
@@ -192,6 +190,12 @@ source ~/.vim/delimitMate.vim
 nnoremap <C-\> :terminal<CR>
 " tnoremap <Esc> <C-\><C-n>
 tnoremap <C-\> <C-\><C-n>:q!<CR>
+
+"Window shift
+nnoremap <C-Left>  :vertical resize +20<CR>
+nnoremap <C-Right> :vertical resize -20<CR>
+nnoremap <C-Up>    :resize -10<CR>
+nnoremap <C-Down>  :resize +10<CR>
 
 nnoremap < <<
 nnoremap > >>
@@ -265,7 +269,7 @@ inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>" 
 
 " WhichKey maps
-let g:which_key_ignore_outside_mappings = 1
+" let g:which_key_ignore_outside_mappings = 1
 let g:which_key_map.cc = 'Sync Indent' 
 let g:which_key_map.fg = 'Fzf ~/' 
 let g:which_key_map.fh = 'History' 
