@@ -33,9 +33,6 @@ function! StayIndentVisual(direction)
   normal! gv
 endfunction
 
-" Map <leader>c in visual mode to call the function
-vnoremap <silent> <leader>c :<C-u>call FixIndentVisual()<CR>
-
 " Remap < and > in visual mode to keep selection
 vnoremap <silent> < <Esc>:call StayIndentVisual('<')<CR>
 vnoremap <silent> > <Esc>:call StayIndentVisual('>')<CR>

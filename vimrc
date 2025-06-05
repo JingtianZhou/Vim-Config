@@ -1,5 +1,6 @@
 " Vim plug
 call plug#begin()
+    Plug 'liuchengxu/vim-which-key'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}
     Plug 'prabirshrestha/vim-lsp'
     Plug 'prabirshrestha/asyncomplete.vim'
@@ -23,7 +24,18 @@ call plug#begin()
 call plug#end()
 let mapleader=" "
 
-" Supertab
+" WhichKey Register
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+call which_key#register('<Space>', "g:which_key_map", 'n')
+call which_key#register('<Space>', "g:which_key_map_visual", 'v')
+"Hide status bar
+autocmd! FileType which_key
+autocmd  FileType which_key set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+set timeoutlen=100 
+let g:which_key_map = {}
+
+" Supertablog
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " Transparent
@@ -37,7 +49,8 @@ function! Transparent()
         let t:is_transparent = 0
     endif
 endfunction
-autocmd VimEnter * call Transparent()
+nnoremap <silent> <leader>ct :call Transparent()<CR>
+" autocmd VimEnter * call Transparent()
 
 " Themes
 set termguicolors
@@ -70,9 +83,6 @@ let g:NERDTreeMapOpenVSplit = '<C-v>'
 " autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " Close the tab if NERDTree is the only window remaining in it.
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " New tab
 nnoremap <leader>t :tabnew<CR>
@@ -83,10 +93,10 @@ nnoremap ] gT
 nnoremap <leader>f :FZF<CR>
 nnoremap <leader>F :FZF ../<CR>
 nnoremap <leader>fg :FZF ~/<CR>
-nnoremap <leader>h :History<CR>
+nnoremap <leader>fh :History<CR>
 let g:fzf_action = {
    \ 'ctrl-n': 'tab split',
-   \ 'ctrl-x': 'split',
+   \ 'ctrl-s': 'split',
    \ 'ctrl-v': 'vsplit' }
 
 " Clipboard
@@ -122,7 +132,6 @@ set cindent
 set autoindent
 " 允许折叠
 set foldenable
-" 注释暗化
 set clipboard=unnamed
 
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
@@ -171,7 +180,9 @@ vnoremap <leader>j J
 
 " Load XML comment functions
 source ~/.vim/xml_comment.vim
-source ~/.vim/fix_indent.vim
+source ~/.vim/fix_indent.vim 
+" Map <leader>c in visual mode to call the function
+vnoremap <silent> <leader>cc :<C-u>call FixIndentVisual()<CR> 
 source ~/.vim/surround.vim
 " Delete closing )
 source ~/.vim/delimitMate.vim
@@ -242,14 +253,28 @@ if executable('clangd')
         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
         \ })
 endif
-let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
-
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support 
 autocmd User asyncomplete_setup call asyncomplete#register_source(
     \ asyncomplete#sources#clang#get_source_options())
 
 " Use arrow or tab to select auto-suggestion
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>" 
+
+" WhichKey maps
+let g:which_key_ignore_outside_mappings = 1
+let g:which_key_map.cc = 'Sync Indent' 
+let g:which_key_map.fg = 'Fzf ~/' 
+let g:which_key_map.fh = 'History' 
+let g:which_key_map.F = 'Fzf ../' 
+let g:which_key_map.f = {
+      \ 'name' : 'Fzf',
+      \ 'F' : 'Fzf ../' ,
+      \ 'fg' : 'Fzf ~/' ,
+      \ 'fh' : 'Fzf history' ,
+      \ }
+let g:which_key_map.t = 'Tab new'
+let g:which_key_map.nf = 'Nerd Tree Find'
