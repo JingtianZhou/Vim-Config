@@ -28,11 +28,10 @@ let mapleader=" "
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 call which_key#register('<Space>', "g:which_key_map", 'n')
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
-"Hide status bar
+" Hide status bar
 autocmd! FileType which_key
 autocmd  FileType which_key set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-set timeoutlen=100 
 let g:which_key_map = {}
 
 " Supertablog
@@ -180,7 +179,7 @@ vnoremap <leader>j J
 source ~/.vim/xml_comment.vim
 source ~/.vim/fix_indent.vim 
 " Map <leader>c in visual mode to call the function
-vnoremap <silent> <leader>cc :<C-u>call FixIndentVisual()<CR> 
+vnoremap <silent> <leader>cc :<C-u>call FixIndentVisual()<CR>
 source ~/.vim/surround.vim
 " Delete closing )
 source ~/.vim/delimitMate.vim
