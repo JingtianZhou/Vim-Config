@@ -10,7 +10,7 @@ call plug#begin()
     Plug 'ervandew/supertab'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     Plug 'rhysd/vim-clang-format'
-""    Plug 'piec/vim-lsp-clangd'
+"   Plug 'piec/vim-lsp-clangd'
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
@@ -25,13 +25,13 @@ call plug#end()
 let mapleader=" "
 
 " WhichKey Register
-nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-call which_key#register('<Space>', "g:which_key_map", 'n')
-call which_key#register('<Space>', "g:which_key_map_visual", 'v')
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+call which_key#register('<Space>', "g:which_key_map")
 " Hide status bar
 autocmd! FileType which_key
 autocmd  FileType which_key set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+set timeout timeoutlen=300 ttimeoutlen=100
 let g:which_key_map = {}
 
 " Supertablog
@@ -71,12 +71,24 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
 
-" File explorer
-nnoremap <leader>e :NERDTreeToggle<CR>
-nnoremap <leader>b :NERDTreeFocus<CR>
+"Nerd File explorer
+nnoremap <leader>e :NERDTreeMirror<CR>:NERDTreeToggle<CR>
+nnoremap <leader>b :NERDTreeMirror<CR>:NERDTreeFocus<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
-let g:NERDTreeMapOpenSplit = '<C-s>'
-let g:NERDTreeMapOpenVSplit = '<C-v>'
+nnoremap <leader>nc :NERDTreeCWD<CR>
+nnoremap <leader>n1 :Bookmark 1<CR>
+nnoremap <leader>n2 :Bookmark 2<CR>
+nnoremap <leader>n3 :Bookmark 3<CR>
+nnoremap <leader>n4 :Bookmark 4<CR>
+nnoremap <leader>1 :OpenBookmark 1<CR>
+nnoremap <leader>2 :OpenBookmark 2<CR>
+nnoremap <leader>3 :OpenBookmark 3<CR>
+nnoremap <leader>4 :OpenBookmark 4<CR>
+let g:NERDTreeMapOpenSplit = 's'
+let g:NERDTreeMapOpenVSplit = 'v'
+let g:NERDTreeMapToggleHidden = '.'
+let g:NERDTreeMapChangeRoot = 'L'
+let g:NERDTreeMapUpdir = 'H'
 " Start NERDTree when Vim is started without file arguments.
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
@@ -270,6 +282,7 @@ inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 " WhichKey maps
 " let g:which_key_ignore_outside_mappings = 1
 let g:which_key_map.cc = 'Sync Indent' 
+let g:which_key_map.ct = 'Call transparent' 
 let g:which_key_map.fg = 'Fzf ~/' 
 let g:which_key_map.fh = 'History' 
 let g:which_key_map.F = 'Fzf ../' 
@@ -280,4 +293,18 @@ let g:which_key_map.f = {
       \ 'fh' : 'Fzf history' ,
       \ }
 let g:which_key_map.t = 'Tab new'
-let g:which_key_map.nf = 'Nerd Tree Find'
+let g:which_key_map.n = {
+      \ 'name' : 'Nerd Tree',
+      \ 'f' :  'Nerd Tree Find' ,
+      \ 'c' :  'Nerd Tree CWD' ,
+      \ '1' :  'Bookmark 1' ,
+      \}
+let g:which_key_map.n2 = 'which_key_ignore' 
+let g:which_key_map.n3 = 'which_key_ignore' 
+let g:which_key_map.n4 = 'which_key_ignore' 
+let g:which_key_map.j =  'which_key_ignore' 
+let g:which_key_map.1 =  'which_key_ignore' 
+let g:which_key_map.2 =  'which_key_ignore' 
+let g:which_key_map.3 =  'which_key_ignore' 
+let g:which_key_map.4 =  'which_key_ignore' 
+let g:which_key_map.q =  'which_key_ignore' 
