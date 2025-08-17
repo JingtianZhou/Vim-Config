@@ -7,10 +7,8 @@ call plug#begin()
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
     Plug 'prabirshrestha/asyncomplete-file.vim'
     Plug 'keremc/asyncomplete-clang.vim'
-    Plug 'ervandew/supertab'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     Plug 'rhysd/vim-clang-format'
-"   Plug 'piec/vim-lsp-clangd'
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
@@ -101,7 +99,7 @@ nnoremap [ gt
 nnoremap ] gT
 
 " Fzf
-nnoremap <leader>f :FZF<CR>
+nnoremap <leader>ff :FZF<CR>
 nnoremap <leader>F :FZF ../<CR>
 nnoremap <leader>fg :FZF ~/<CR>
 nnoremap <leader>fh :History<CR>
@@ -144,6 +142,8 @@ set autoindent
 " 允许折叠
 set foldenable
 set clipboard=unnamed
+" Only use current buffer (.) for keyword completion so it doesn't search files
+set complete=.
 
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
@@ -175,8 +175,6 @@ inoremap <Up> <ESC>gki
 
 nnoremap <C-i> <Tab>
 inoremap <C-d> <Del>
-
-
 
 " visual mode 
 vnoremap j gj
@@ -273,24 +271,24 @@ autocmd User asyncomplete_setup call asyncomplete#register_source(
     \ asyncomplete#sources#clang#get_source_options())
 
 " Use arrow or tab to select auto-suggestion
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <silent><expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <silent><expr> <Down>  pumvisible() ? "\<C-n>" : "\<Tab>"
+"  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"  inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>" 
 
 " WhichKey maps
 " let g:which_key_ignore_outside_mappings = 1
+let g:which_key_map.f = 'Fzf' 
 let g:which_key_map.cc = 'Sync Indent' 
 let g:which_key_map.ct = 'Call transparent' 
-let g:which_key_map.fg = 'Fzf ~/' 
-let g:which_key_map.fh = 'History' 
-let g:which_key_map.F = 'Fzf ../' 
+let g:which_key_map.cf = 'Clang format' 
 let g:which_key_map.f = {
       \ 'name' : 'Fzf',
+      \ 'f' : 'Fzf ./' ,
+      \ 'h' : 'Fzf history' ,
       \ 'F' : 'Fzf ../' ,
-      \ 'fg' : 'Fzf ~/' ,
-      \ 'fh' : 'Fzf history' ,
+      \ 'g' : 'Fzf ~/' ,
       \ }
 let g:which_key_map.t = 'Tab new'
 let g:which_key_map.n = {
@@ -308,3 +306,5 @@ let g:which_key_map.2 =  'which_key_ignore'
 let g:which_key_map.3 =  'which_key_ignore' 
 let g:which_key_map.4 =  'which_key_ignore' 
 let g:which_key_map.q =  'which_key_ignore' 
+let g:which_key_map.F =  'which_key_ignore' 
+let g:which_key_map.yy =  'which_key_ignore' 
