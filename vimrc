@@ -124,11 +124,15 @@ set expandtab
 set shiftround
 syntax enable
 set encoding=UTF-8
+set noswapfile
 " Normally we use vim-extensions. If you want true vi-compatibility
 " remove change the following statements
 set nocompatible	" Use Vim defaults instead of 100% vi compatibility
 set backspace=2		" more powerful backspacing
 let skip_defaults_vim=1
+" Open .vimrc quickly
+command! Rc edit $MYVIMRC
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
 " Disable auto comment next line
 autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
@@ -271,10 +275,10 @@ autocmd User asyncomplete_setup call asyncomplete#register_source(
     \ asyncomplete#sources#clang#get_source_options())
 
 " Use arrow or tab to select auto-suggestion
-inoremap <silent><expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <silent><expr> <Down>  pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : asyncomplete#force_refresh()
+inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Tab>"
 "  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"  inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>" 
 
 " WhichKey maps
