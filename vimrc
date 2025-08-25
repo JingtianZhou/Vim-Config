@@ -69,9 +69,19 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
 
+function! ToggleOrRun(cmd)
+  " Check if NERDTree buffer is open
+  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
+    " If open, toggle (close it)
+    NERDTreeToggle
+  else
+    " If closed, run the given command
+    execute a:cmd
+  endif
+endfunction
 "Nerd File explorer
-nnoremap <leader>e :NERDTreeMirror<CR>:NERDTreeToggle<CR>
-nnoremap <leader>b :NERDTreeMirror<CR>:NERDTreeFocus<CR>
+nnoremap <leader>e :call ToggleOrRun("NERDTreeFind")<CR>
+nnoremap <leader>b :call ToggleOrRun("NERDTreeCWD")  <CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
 nnoremap <leader>nc :NERDTreeCWD<CR>
 nnoremap <leader>n1 :Bookmark 1<CR>
@@ -87,11 +97,26 @@ let g:NERDTreeMapOpenVSplit = 'v'
 let g:NERDTreeMapToggleHidden = '.'
 let g:NERDTreeMapChangeRoot = 'L'
 let g:NERDTreeMapUpdir = 'H'
+
+function! NERDTreeClosePreview()
+  " Move focus to the preview window (assumes NERDTree is on the left)
+  wincmd l
+  " Switch back to previous buffer
+  execute "b#"
+  " Go back to NERDTree
+  wincmd h
+endfunction
+autocmd FileType nerdtree nnoremap <buffer> <Esc> :call NERDTreeClosePreview()<CR>
+
 " Start NERDTree when Vim is started without file arguments.
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " Close the tab if NERDTree is the only window remaining in it.
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if &buftype != 'quickfix' && getcmdwintype() == '' | silent NERDTreeMirror | endif
+" locate the current file in NERDTree
+" autocmd BufWinEnter * NERDTreeFind
 
 " New tab
 nnoremap <leader>t :tabnew<CR>
@@ -130,8 +155,9 @@ set noswapfile
 set nocompatible	" Use Vim defaults instead of 100% vi compatibility
 set backspace=2		" more powerful backspacing
 let skip_defaults_vim=1
+
 " Open .vimrc quickly
-command! Rc edit $MYVIMRC
+command! R tabedit $MYVIMRC
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
 " Disable auto comment next line
@@ -152,7 +178,7 @@ set complete=.
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
 nnoremap <leader>wq :wq<CR>
-nnoremap <leader>q :q!<CR>
+nnoremap <leader>q <C-w>l:tabclose<CR>
 nnoremap <leader>s :split<CR>
 nnoremap <leader>sv :vsplit<CR>
 nnoremap <leader>j J
