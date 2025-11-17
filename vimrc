@@ -44,6 +44,7 @@ function! Transparent()
         let t:is_transparent = 1
     else
         set background=dark
+        hi Normal guibg=#2E3440 ctermbg=black
         let t:is_transparent = 0
     endif
 endfunction
