@@ -206,7 +206,7 @@ function! ToggleComment(mode)
 
   let l:comment_map = {
     \   '#': [ ['sh', 'zsh', 'py'], ['.zshrc'] ],
-    \   '"': [ ['vim'], ['vimrc'] ],
+    \   '"': [ ['vim'], ['.vimrc'] ],
     \   '%': [ ['m'], [] ]
     \ }
 

@@ -70,6 +70,8 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
 
+
+"Nerd File explorer ======================================================================
 function! ToggleOrRun(cmd)
   " Check if NERDTree buffer is open
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
@@ -80,7 +82,6 @@ function! ToggleOrRun(cmd)
     execute a:cmd
   endif
 endfunction
-"Nerd File explorer
 nnoremap <leader>e :call ToggleOrRun("NERDTreeFind")<CR>
 nnoremap <leader>b :call ToggleOrRun("NERDTreeCWD")  <CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
@@ -99,15 +100,22 @@ let g:NERDTreeMapToggleHidden = '.'
 let g:NERDTreeMapChangeRoot = 'L'
 let g:NERDTreeMapUpdir = 'H'
 
-function! NERDTreeClosePreview()
-  " Move focus to the preview window (assumes NERDTree is on the left)
-  wincmd l
-  " Switch back to previous buffer
-  execute "b#"
-  " Go back to NERDTree
-  wincmd h
+function! NERDTreePreviewAction(action, ...)
+  let l:nerdtree_win = winnr() " Save current window (NERDTree)
+  wincmd l " Jump to the preview window (to the right of NERDTree)
+  if a:action ==# 'close'
+    " Switch back to previous buffer
+    execute "b#"
+  elseif a:action ==# 'scroll'
+    " a:1 holds the scroll key sequence
+    execute "normal! " . a:1
+  endif
+  " Return to NERDTree
+  execute l:nerdtree_win . "wincmd w"
 endfunction
-autocmd FileType nerdtree nnoremap <buffer> <Esc> :call NERDTreeClosePreview()<CR>
+autocmd FileType nerdtree nnoremap <buffer> <Esc>  :call NERDTreePreviewAction('close')<CR>
+autocmd FileType nerdtree nnoremap <buffer> <C-d>  <Cmd>call NERDTreePreviewAction('scroll', '<C-d>')<CR>
+autocmd FileType nerdtree nnoremap <buffer> <C-u>  <Cmd>call NERDTreePreviewAction('scroll', "\<C-u>")<CR>
 
 " Start NERDTree when Vim is started without file arguments.
 " autocmd StdinReadPre * let s:std_in=1
@@ -118,7 +126,7 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTa
 autocmd BufWinEnter * if &buftype != 'quickfix' && getcmdwintype() == '' | silent NERDTreeMirror | endif
 " locate the current file in NERDTree
 " autocmd BufWinEnter * NERDTreeFind
-
+" =====================================================================================================
 " New tab
 nnoremap <leader>t :tabnew<CR>
 nnoremap [ gt
@@ -179,7 +187,7 @@ set complete=.
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
 nnoremap <leader>wq :wq<CR>
-nnoremap <leader>q <C-w>l:tabclose<CR>
+nnoremap <leader>q :q!<CR>
 nnoremap <leader>s :split<CR>
 nnoremap <leader>sv :vsplit<CR>
 nnoremap <leader>j J
