@@ -9,6 +9,7 @@ call plug#begin()
     Plug 'keremc/asyncomplete-clang.vim'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     Plug 'rhysd/vim-clang-format'
+    Plug 'gcmt/wildfire.vim'
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
@@ -125,7 +126,7 @@ nnoremap ] gT
 
 " Fzf
 nnoremap <leader>ff :FZF<CR>
-nnoremap <leader>F :FZF ../<CR>
+nnoremap <leader>fF :FZF ../<CR>
 nnoremap <leader>fg :FZF ~/<CR>
 nnoremap <leader>fh :History<CR>
 let g:fzf_action = {
@@ -301,9 +302,9 @@ autocmd User asyncomplete_setup call asyncomplete#register_source(
     \ asyncomplete#sources#clang#get_source_options())
 
 " Use arrow or tab to select auto-suggestion
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : asyncomplete#force_refresh()
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : asyncomplete#force_refresh()
 inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Tab>"
-"  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>" 
 
