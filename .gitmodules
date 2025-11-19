@@ -1,0 +1,3 @@
+[submodule "plugged/neoterm"]
+	path = plugged/neoterm
+	url = git@github.com:kassio/neoterm.git

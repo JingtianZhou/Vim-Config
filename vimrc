@@ -9,7 +9,7 @@ call plug#begin()
     Plug 'keremc/asyncomplete-clang.vim'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     Plug 'rhysd/vim-clang-format'
-    Plug 'gcmt/wildfire.vim'
+    Plug 'gcmt/wildfire.vim' "Block visual selection
     " theme
     Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
     Plug 'nordtheme/vim'
@@ -20,10 +20,24 @@ call plug#begin()
     Plug 'PhilRunninger/nerdtree-visual-selection'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
+    " Terminal
+    Plug 'kassio/neoterm'
 call plug#end()
 let mapleader=" "
 
-" WhichKey Register
+""""""""""""""""""""""""""""""""""""""""""""""
+""" neoterm Terminal
+""""""""""""""""""""""""""""""""""""""""""""""
+let g:neoterm_default_mod = ':botright'
+nnoremap <C-\> :Ttoggle<CR>:Topen<CR>
+tnoremap <C-\> <C-\><C-n>:Ttoggle<CR>
+set hidden "lets Vim abandon buffers even if they have running jobs.
+" nnoremap <C-\> :terminal<CR>
+" tnoremap <Esc> <C-\><C-n>
+" tnoremap <C-\> <C-\><C-n>:q!<CR>
+""""""""""""""""""""""""""""""""""""""""""""""
+""" WhichKey Register
+""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 call which_key#register('<Space>', "g:which_key_map")
 " Hide status bar
@@ -36,7 +50,9 @@ let g:which_key_map = {}
 " Supertablog
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
-" Transparent
+""""""""""""""""""""""""""""""""""""""""""""""
+""" Transparent
+""""""""""""""""""""""""""""""""""""""""""""""
 let t:is_transparent = 0
 function! Transparent()
     if t:is_transparent == 0
@@ -51,7 +67,9 @@ endfunction
 nnoremap <silent> <leader>ct :call Transparent()<CR>
 " autocmd VimEnter * call Transparent()
 
-" Themes
+""""""""""""""""""""""""""""""""""""""""""""""
+""" Themes
+""""""""""""""""""""""""""""""""""""""""""""""
 set termguicolors
 "  let g:tokyonight_style = 'storm' " available: night, storm
 "  let g:tokyonight_enable_italic = 1
@@ -72,7 +90,9 @@ let g:lightline = {
       \ }
 
 
-"Nerd File explorer ======================================================================
+""""""""""""""""""""""""""""""""""""""""""""""
+""" Nerd File explorer 
+""""""""""""""""""""""""""""""""""""""""""""""
 function! ToggleOrRun(cmd)
   " Check if NERDTree buffer is open
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
@@ -127,8 +147,10 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTa
 autocmd BufWinEnter * if &buftype != 'quickfix' && getcmdwintype() == '' | silent NERDTreeMirror | endif
 " locate the current file in NERDTree
 " autocmd BufWinEnter * NERDTreeFind
-" =====================================================================================================
-" New tab
+
+""""""""""""""""""""""""""""""""""""""""""""""
+""" New tab
+""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>t :tabnew<CR>
 nnoremap [ gt
 nnoremap ] gT
@@ -143,14 +165,19 @@ let g:fzf_action = {
    \ 'ctrl-s': 'split',
    \ 'ctrl-v': 'vsplit' }
 
-" Clipboard
+""""""""""""""""""""""""""""""""""""""""""""""
+""" Clipboard
+""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>y <Plug>OSCYankOperator 
 nnoremap <leader>yy <Plug>OSCYankOperator_
 vnoremap <leader>y <Plug>OSCYankVisual
 
-" Clang format
+""" Clang format
 nnoremap <leader>cf :ClangFormat<CR>
-" Configuration file for vim
+
+""""""""""""""""""""""""""""""""""""""""""""""
+""" Configuration file for vim
+""""""""""""""""""""""""""""""""""""""""""""""
 set modelines=0		
 set ignorecase
 set tabstop=4
@@ -185,6 +212,7 @@ set clipboard=unnamed
 " Only use current buffer (.) for keyword completion so it doesn't search files
 set complete=.
 
+""""""""""""""""""""""""""""""""""""""""""""""
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
 nnoremap <leader>wq :wq<CR>
@@ -234,11 +262,6 @@ source ~/.vim/surround.vim
 " Delete closing )
 source ~/.vim/delimitMate.vim
 " let g:delimitMate_expand_cr = 1
-
-" terminal
-nnoremap <C-\> :terminal<CR>
-" tnoremap <Esc> <C-\><C-n>
-tnoremap <C-\> <C-\><C-n>:q!<CR>
 
 "Window shift
 nnoremap <C-Left>  :vertical resize +20<CR>
