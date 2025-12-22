@@ -22,14 +22,27 @@ call plug#begin()
     Plug 'junegunn/fzf.vim'
     " Terminal
     Plug 'kassio/neoterm'
+    Plug 'voldikss/vim-floaterm'
 call plug#end()
 let mapleader=" "
+
+""""""""""""""""""""""""""""""""""""""""""""""
+""" float Terminal
+""""""""""""""""""""""""""""""""""""""""""""""
+let g:floaterm_keymap_toggle = '<C-/>'
+let g:floaterm_keymap_prev   = '<C-9>'
+let g:floaterm_keymap_next   = '<C-0>'
+let g:floaterm_keymap_new    = '<C-t>'
+let g:floaterm_keymap_hide   = '<ESC><ESC>'
+nnoremap <C-=> :FloatermNew yazi<CR>
+let g:floaterm_autoclose=2
+let g:floaterm_titleposition='left'
 
 """"""""""""""""""""""""""""""""""""""""""""""
 """ neoterm Terminal
 """"""""""""""""""""""""""""""""""""""""""""""
 let g:neoterm_default_mod = ':botright'
-nnoremap <C-\> :Ttoggle<CR>:Topen<CR>
+nnoremap <C-\> :Ttoggle<CR><CR><C-w>j
 tnoremap <C-\> <C-\><C-n>:Ttoggle<CR>
 set hidden "lets Vim abandon buffers even if they have running jobs.
 " nnoremap <C-\> :terminal<CR>
@@ -46,9 +59,6 @@ autocmd  FileType which_key set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 set timeout timeoutlen=300 ttimeoutlen=100
 let g:which_key_map = {}
-
-" Supertablog
-let g:SuperTabDefaultCompletionType = "<c-n>"
 
 """"""""""""""""""""""""""""""""""""""""""""""
 """ Transparent
@@ -107,14 +117,7 @@ nnoremap <leader>e :call ToggleOrRun("NERDTreeFind")<CR>
 nnoremap <leader>b :call ToggleOrRun("NERDTreeCWD")  <CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
 nnoremap <leader>nc :NERDTreeCWD<CR>
-nnoremap <leader>n1 :Bookmark 1<CR>
-nnoremap <leader>n2 :Bookmark 2<CR>
-nnoremap <leader>n3 :Bookmark 3<CR>
-nnoremap <leader>n4 :Bookmark 4<CR>
-nnoremap <leader>1 :OpenBookmark 1<CR>
-nnoremap <leader>2 :OpenBookmark 2<CR>
-nnoremap <leader>3 :OpenBookmark 3<CR>
-nnoremap <leader>4 :OpenBookmark 4<CR>
+nnoremap <leader>ns :NERDTree ~/Scratch/script<CR>
 let g:NERDTreeMapOpenSplit = 's'
 let g:NERDTreeMapOpenVSplit = 'v'
 let g:NERDTreeMapToggleHidden = '.'
@@ -215,8 +218,8 @@ set complete=.
 """"""""""""""""""""""""""""""""""""""""""""""
 "nnoremap  <expr>0     col('.') == 1 ? '^': '0'
 nnoremap <expr> 0 virtcol('.') == indent('.')+1 ? '0' : '^'
-nnoremap <leader>wq :wq<CR>
-nnoremap <leader>q :q!<CR>
+nnoremap <leader>wq :wqa<CR>
+nnoremap <leader>q :qa!<CR>
 nnoremap <leader>s :split<CR>
 nnoremap <leader>sv :vsplit<CR>
 nnoremap <leader>j J
@@ -358,7 +361,7 @@ let g:which_key_map.n = {
       \ 'name' : 'Nerd Tree',
       \ 'f' :  'Nerd Tree Find' ,
       \ 'c' :  'Nerd Tree CWD' ,
-      \ '1' :  'Bookmark 1' ,
+      \ 's' :  'Nerd Tree in script' ,
       \}
 let g:which_key_map.n2 = 'which_key_ignore' 
 let g:which_key_map.n3 = 'which_key_ignore' 
