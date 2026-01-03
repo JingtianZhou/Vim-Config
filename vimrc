@@ -23,6 +23,7 @@ call plug#begin()
     " Terminal
     Plug 'kassio/neoterm'
     Plug 'voldikss/vim-floaterm'
+    Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 let mapleader=" "
 
@@ -342,6 +343,15 @@ inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Tab>"
 " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>" 
+
+" Tmux
+let s:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <c-w>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-w>j :TmuxNavigateDown<cr>
+nnoremap <silent> <c-w>k :TmuxNavigateUp<cr>
+nnoremap <silent> <c-w>l :TmuxNavigateRight<cr>
+nnoremap <silent> <c-w>p :<C-U>TmuxNavigatePrevious<cr>
 
 " WhichKey maps
 " let g:which_key_ignore_outside_mappings = 1
