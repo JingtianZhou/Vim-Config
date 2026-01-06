@@ -21,7 +21,6 @@ call plug#begin()
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     " Terminal
-    Plug 'kassio/neoterm'
     Plug 'voldikss/vim-floaterm'
     Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
@@ -30,7 +29,7 @@ let mapleader=" "
 """"""""""""""""""""""""""""""""""""""""""""""
 """ float Terminal
 """"""""""""""""""""""""""""""""""""""""""""""
-let g:floaterm_keymap_toggle = '<C-/>'
+let g:floaterm_keymap_toggle = '<C-_>'
 let g:floaterm_keymap_prev   = '<C-9>'
 let g:floaterm_keymap_next   = '<C-0>'
 let g:floaterm_keymap_new    = '<C-t>'
@@ -42,10 +41,10 @@ let g:floaterm_titleposition='left'
 """"""""""""""""""""""""""""""""""""""""""""""
 """ neoterm Terminal
 """"""""""""""""""""""""""""""""""""""""""""""
-let g:neoterm_default_mod = ':botright'
-nnoremap <C-\> :Ttoggle<CR><CR><C-w>j
-tnoremap <C-\> <C-\><C-n>:Ttoggle<CR>
-set hidden "lets Vim abandon buffers even if they have running jobs.
+"  let g:neoterm_default_mod = ':botright'
+"  nnoremap <C-\> :Ttoggle<CR><CR><C-w>j
+"  tnoremap <C-\> <C-\><C-n>:Ttoggle<CR>
+"  set hidden "lets Vim abandon buffers even if they have running jobs.
 " nnoremap <C-\> :terminal<CR>
 " tnoremap <Esc> <C-\><C-n>
 " tnoremap <C-\> <C-\><C-n>:q!<CR>
@@ -338,9 +337,7 @@ autocmd User asyncomplete_setup call asyncomplete#register_source(
     \ asyncomplete#sources#clang#get_source_options())
 
 " Use arrow or tab to select auto-suggestion
-" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : asyncomplete#force_refresh()
 inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>" 
 
