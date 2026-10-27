@@ -178,6 +178,12 @@ vnoremap <leader>y <Plug>OSCYankVisual
 """ Clang format
 nnoremap <leader>cf :ClangFormat<CR>
 
+""" Shirting window
+nnoremap <Left> <C-w>h
+nnoremap <Right> <C-w>l
+nnoremap <Up> <C-w>k
+nnoremap <Down> <C-w>j
+
 """"""""""""""""""""""""""""""""""""""""""""""
 """ Configuration file for vim
 """"""""""""""""""""""""""""""""""""""""""""""
@@ -267,8 +273,8 @@ source ~/.vim/delimitMate.vim
 " let g:delimitMate_expand_cr = 1
 
 "Window shift
-nnoremap <C-Left>  :vertical resize +20<CR>
-nnoremap <C-Right> :vertical resize -20<CR>
+nnoremap <C-Left>  :vertical resize -20<CR>
+nnoremap <C-Right> :vertical resize +20<CR>
 nnoremap <C-Up>    :resize -10<CR>
 nnoremap <C-Down>  :resize +10<CR>
 
